@@ -1,1 +1,1 @@
-createobject("wscript.shell").run "run.bat",0
+createobject("wscript.shell").run "index.exe",0
